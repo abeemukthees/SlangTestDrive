@@ -1,0 +1,74 @@
+[
+  {
+    "ID": 1,
+    "Name": "Bangalore",
+    "Latitude": "1",
+    "Longitude": "1"
+  },
+  {
+    "ID": 2,
+    "Name": "Mysore",
+    "Latitude": "1",
+    "Longitude": "1"
+  },
+  {
+    "ID": 3,
+    "Name": "Hyderabad",
+    "Latitude": "1",
+    "Longitude": "1"
+  },
+  {
+    "ID": 4,
+    "Name": "Chennai",
+    "Latitude": "1",
+    "Longitude": "1"
+  },
+  {
+    "ID": 5,
+    "Name": "Madurai",
+    "Latitude": "1",
+    "Longitude": "1"
+  },
+  {
+    "ID": 6,
+    "Name": "Coimbatore",
+    "Latitude": "1",
+    "Longitude": "1"
+  },
+  {
+    "ID": 7,
+    "Name": "Velankanni",
+    "Latitude": "1",
+    "Longitude": "1"
+  },
+  {
+    "ID": 8,
+    "Name": "Nagapattinam",
+    "Latitude": "1",
+    "Longitude": "1"
+  },
+  {
+    "ID": 9,
+    "Name": "Thiruvarur",
+    "Latitude": "1",
+    "Longitude": "1"
+  },
+  {
+    "ID": 10,
+    "Name": "Chennai Intl Airport",
+    "Latitude": "1",
+    "Longitude": "1"
+  },
+  {
+    "ID": 11,
+    "Name": "Ernakulam",
+    "Latitude": "1",
+    "Longitude": "1"
+  },
+  {
+    "ID": 12,
+    "Name": "Bengaluru",
+    "Latitude": "1",
+    "Longitude": "1"
+  }
+]

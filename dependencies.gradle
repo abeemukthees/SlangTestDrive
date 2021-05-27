@@ -1,0 +1,88 @@
+// List of all gradle dependencies:
+
+// The dependency version are ordered and grouped in terms of its importance and type.
+// Please maintain the order and grouping
+ext.versions = [
+
+        buildTools                   : '30.0.2',
+        compileSdk                   : 29,
+        targetSdk                    : 29,
+        minimumSdk                   : 22,
+
+        // Pure Java & Kotlin dependencies
+
+        kotlin                       : '1.4.30',
+        kotlinSerialization          : '0.14.0',
+        kotlinCoroutines             : '1.3.9',
+
+        // Android Google dependencies
+
+        androidx                     : '1.0.0',
+        androidXCore                 : '1.2.0',
+        annotation                   : '1.1.0',
+        appCompat                    : '1.2.0',
+        constraintLayout             : '2.0.4',
+        design                       : '1.2.0',
+
+        // Android Kotlin dependencies
+
+        androidxCoreKtx              : '1.2.0',
+
+        slangLabs                    : '4.0.5.4',
+
+        // Test dependencies
+
+        junit                        : '4.12',
+        espresso                     : '3.1.0',
+]
+
+// Pure Java & Kotlin dependencies
+
+ext.libraries = [
+
+        kotlinStdlib       : "org.jetbrains.kotlin:kotlin-stdlib:$versions.kotlin",
+        kotlinReflect      : "org.jetbrains.kotlin:kotlin-reflect:$versions.kotlin",
+        kotlinCommon       : "org.jetbrains.kotlin:kotlin-stdlib-common:$versions.kotlin",
+        kotlinJdk7         : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin",
+        kotlinSerialization: "org.jetbrains.kotlinx:kotlinx-serialization-runtime:$versions.kotlinSerialization",
+        kotlinCoroutines   : "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.kotlinCoroutines",
+        gson               : "com.google.code.gson:gson:$versions.gson",
+
+
+]
+
+// Android dependencies
+
+ext.androidLibraries = [
+
+        // Android based dependencies
+
+        kotlinAndroidCoroutines      : "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.kotlinCoroutines",
+
+        // Android dependencies
+
+        androidxCore                 : "androidx.core:core:$versions.androidXCore",
+        annotation                   : "androidx.annotation:annotation:$versions.annotation",
+
+        // Android Kotlin dependencies
+
+        androidxCoreKtx              : "androidx.core:core-ktx:$versions.androidxCoreKtx",
+
+        // Google UI dependencies
+
+        coreUi                       : "androidx.legacy:legacy-support-core-ui:$versions.androidx",
+        appCompatV7                  : "androidx.appcompat:appcompat:$versions.appCompat",
+        constraintLayout             : "androidx.constraintlayout:constraintlayout:$versions.constraintLayout",
+        design                       : "com.google.android.material:material:$versions.design",
+
+        slangLabs                    : "in.slanglabs.assistants:slang-travel-assistant:$versions.slangLabs"
+]
+
+// Test dependencies
+
+ext.testLibraries = [
+
+        junit       : "junit:junit:$versions.junit",
+        androidJunit: "androidx.test.ext:junit:$versions.androidx",
+        espressoCore: "androidx.test.espresso:espresso-core:$versions.espresso",
+]

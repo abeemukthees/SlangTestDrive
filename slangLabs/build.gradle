@@ -1,0 +1,66 @@
+plugins {
+    id 'com.android.dynamic-feature'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'kotlin-android-extensions'
+}
+android {
+
+    buildToolsVersion versions.buildTools
+    compileSdkVersion versions.compileSdk
+
+    defaultConfig {
+        applicationId "com.msa.slanglabs"
+
+        minSdkVersion versions.minimumSdk
+        targetSdkVersion versions.targetSdk
+
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+
+    packagingOptions {
+        exclude "DebugProbesKt.bin"
+    }
+}
+
+dependencies {
+    implementation project(":app")
+
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0'
+
+    implementation libraries.gson
+
+    implementation androidLibraries.androidxCoreKtx
+    implementation androidLibraries.constraintLayout
+    implementation androidLibraries.slangLabs
+
+    implementation 'com.github.kittinunf.fuel:fuel:2.3.1'
+    implementation 'com.github.kittinunf.fuel:fuel-gson:2.3.1'
+    implementation 'com.github.kittinunf.fuel:fuel-coroutines:2.3.1'
+
+    testImplementation testLibraries.junit
+    androidTestImplementation testLibraries.androidJunit
+    androidTestImplementation testLibraries.espressoCore
+    androidTestImplementation androidLibraries.annotation
+}
