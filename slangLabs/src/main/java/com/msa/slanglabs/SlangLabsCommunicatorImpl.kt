@@ -65,7 +65,9 @@ class SlangLabsCommunicatorImpl(
                     tag,
                     "onSearch = ${searchInfo.source.city} - ${searchInfo.destination.city} on ${searchInfo.onwardDate}"
                 )
+
                 printLog("onSearch\n${searchInfo.source.city} - ${searchInfo.destination.city} on ${searchInfo.onwardDate}")
+
                 validateAndSearch(searchInfo)
                 return SearchUserJourney.AppState.WAITING
             }
@@ -176,6 +178,7 @@ class SlangLabsCommunicatorImpl(
     }
 
     private fun downloadAllCities() {
+        Log.d(tag, "downloadAllCities")
         launch(Dispatchers.IO + CoroutineExceptionHandler { _, throwable ->
             throwable.printStackTrace()
 
@@ -202,102 +205,106 @@ class SlangLabsCommunicatorImpl(
         }
     }
 
-    private fun validateAndSearch(searchInfo: SearchInfo) = runBlocking(coroutineContext) {
-        Log.d(tag, "validateAndSearch")
-        if (cities.isNullOrEmpty()) {
-            val cities = launch { downloadAllCities() }
-            cities.join()
-        }
+    private fun validateAndSearch(searchInfo: SearchInfo) =
+        launch(Dispatchers.IO + CoroutineExceptionHandler { _, throwable ->
+            throwable.printStackTrace()
+        }) {
 
-        if (searchInfo.destination.city.isNullOrBlank()) {
-            searchUserJourney?.setNeedDestination()
-            searchUserJourney?.notifyAppState(SearchUserJourney.AppState.SEARCH_RESULTS)
-            Log.e(tag, "destination not available")
-            printLog("destination not available")
-            return@runBlocking
-        }
+            Log.d(tag, "validateAndSearch")
 
-        val destination = searchCity(searchInfo.destination.city)
-
-        if (destination != null) {
-            voiceAssistantMutableState.postValue(voiceAssistantState.value?.copy(destination = destination))
-            Log.d(tag, "Destination valid")
-            printLog("Destination valid")
-        } else {
-            searchUserJourney?.setDestinationInvalid()
-            searchUserJourney?.notifyAppState(SearchUserJourney.AppState.SEARCH_RESULTS)
-            Log.e(tag, "Destination invalid")
-            printLog("Destination invalid")
-        }
-
-        if (searchInfo.source.city.isNullOrBlank()) {
-            searchUserJourney?.setNeedSource()
-            searchUserJourney?.notifyAppState(SearchUserJourney.AppState.SEARCH_RESULTS)
-            Log.e(tag, "source not available")
-            printLog("source not available")
-            return@runBlocking
-        }
-
-        val source = searchCity(searchInfo.source.city)
-
-        if (source != null) {
-            voiceAssistantMutableState.postValue(voiceAssistantState.value?.copy(source = source))
-            Log.d(tag, "Source valid")
-            printLog("Source valid")
-        } else {
-            searchUserJourney?.setSourceInvalid()
-            searchUserJourney?.notifyAppState(SearchUserJourney.AppState.SEARCH_RESULTS)
-            Log.e(tag, "Source invalid")
-            printLog("Source invalid")
-        }
-
-        val dateOfJourney = searchInfo.onwardDate
-
-        if (dateOfJourney == null) {
-            searchUserJourney?.setNeedOnwardDate()
-            searchUserJourney?.notifyAppState(SearchUserJourney.AppState.SEARCH_RESULTS)
-            Log.e(tag, "received onwardDate invalid")
-            printLog("received onwardDate invalid")
-            return@runBlocking
-        }
-
-        if (dateOfJourney.before(Date())) {
-            searchUserJourney?.setOnwardDateInvalid()
-            searchUserJourney?.notifyAppState(SearchUserJourney.AppState.SEARCH_RESULTS)
-            Log.e(tag, "Date not valid")
-            printLog("Date not valid")
-            return@runBlocking
-        }
-
-        Log.d(tag, "voiceAssistantState = ${voiceAssistantState.value}")
-        Log.d(tag, "source = $source")
-        Log.d(tag, "destination = $destination")
-        Log.d(tag, "dateOfJourney = $dateOfJourney")
-        printLog("END")
-
-        if (source != null && destination != null) {
-
-            //Temp fix
-            if (source.id == destination.id) {
-                searchUserJourney?.setDestinationInvalid()
-                searchUserJourney?.notifyAppState(SearchUserJourney.AppState.SEARCH_RESULTS)
-                return@runBlocking
+            if (cities.isNullOrEmpty()) {
+                launch { downloadAllCities() }.join()
             }
 
-            postAction(
-                SlangLabsCommunicator.SlangLabsAction.OpenSearchScreenAction(
-                    Pair(source.id, source.name),
-                    Pair(destination.id, destination.name), dateOfJourney
+            if (searchInfo.destination.city.isNullOrBlank()) {
+                searchUserJourney?.setNeedDestination()
+                searchUserJourney?.notifyAppState(SearchUserJourney.AppState.SEARCH_RESULTS)
+                Log.e(tag, "destination not available")
+                printLog("destination not available")
+                return@launch
+            }
+
+            val destination = searchCity(searchInfo.destination.city)
+
+            if (destination != null) {
+                voiceAssistantMutableState.postValue(voiceAssistantState.value?.copy(destination = destination))
+                Log.d(tag, "Destination valid")
+                printLog("Destination valid")
+            } else {
+                searchUserJourney?.setDestinationInvalid()
+                searchUserJourney?.notifyAppState(SearchUserJourney.AppState.SEARCH_RESULTS)
+                Log.e(tag, "Destination invalid")
+                printLog("Destination invalid")
+            }
+
+            if (searchInfo.source.city.isNullOrBlank()) {
+                searchUserJourney?.setNeedSource()
+                searchUserJourney?.notifyAppState(SearchUserJourney.AppState.SEARCH_RESULTS)
+                Log.e(tag, "source not available")
+                printLog("source not available")
+                return@launch
+            }
+
+            val source = searchCity(searchInfo.source.city)
+
+            if (source != null) {
+                voiceAssistantMutableState.postValue(voiceAssistantState.value?.copy(source = source))
+                Log.d(tag, "Source valid")
+                printLog("Source valid")
+            } else {
+                searchUserJourney?.setSourceInvalid()
+                searchUserJourney?.notifyAppState(SearchUserJourney.AppState.SEARCH_RESULTS)
+                Log.e(tag, "Source invalid")
+                printLog("Source invalid")
+            }
+
+            val dateOfJourney = searchInfo.onwardDate
+
+            if (dateOfJourney == null) {
+                searchUserJourney?.setNeedOnwardDate()
+                searchUserJourney?.notifyAppState(SearchUserJourney.AppState.SEARCH_RESULTS)
+                Log.e(tag, "received onwardDate invalid")
+                printLog("received onwardDate invalid")
+                return@launch
+            }
+
+            if (dateOfJourney.before(Date())) {
+                searchUserJourney?.setOnwardDateInvalid()
+                searchUserJourney?.notifyAppState(SearchUserJourney.AppState.SEARCH_RESULTS)
+                Log.e(tag, "Date not valid")
+                printLog("Date not valid")
+                return@launch
+            }
+
+            Log.d(tag, "voiceAssistantState = ${voiceAssistantState.value}")
+            Log.d(tag, "source = $source")
+            Log.d(tag, "destination = $destination")
+            Log.d(tag, "dateOfJourney = $dateOfJourney")
+            printLog("END")
+
+            if (source != null && destination != null) {
+
+                //Temp fix
+                if (source.id == destination.id) {
+                    searchUserJourney?.setDestinationInvalid()
+                    searchUserJourney?.notifyAppState(SearchUserJourney.AppState.SEARCH_RESULTS)
+                    return@launch
+                }
+
+                postAction(
+                    SlangLabsCommunicator.SlangLabsAction.OpenSearchScreenAction(
+                        Pair(source.id, source.name),
+                        Pair(destination.id, destination.name), dateOfJourney
+                    )
                 )
-            )
-            searchUserJourney?.setSuccess()
-            searchUserJourney?.notifyAppState(SearchUserJourney.AppState.SEARCH_RESULTS)
-            SearchUserJourney.getContext().clear()
-            searchUserJourney = null
-        } else {
-            Log.e(tag, "Search not success")
+                searchUserJourney?.setSuccess()
+                searchUserJourney?.notifyAppState(SearchUserJourney.AppState.SEARCH_RESULTS)
+                SearchUserJourney.getContext().clear()
+                searchUserJourney = null
+            } else {
+                Log.e(tag, "Search not success")
+            }
         }
-    }
 
     private fun searchCity(name: String): CityItem? {
         val index = cities?.binarySearch {
