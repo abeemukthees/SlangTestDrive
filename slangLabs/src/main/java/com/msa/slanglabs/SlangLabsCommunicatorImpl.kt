@@ -68,8 +68,7 @@ class SlangLabsCommunicatorImpl(
 
                 printLog("onSearch\n${searchInfo.source.city} - ${searchInfo.destination.city} on ${searchInfo.onwardDate}")
 
-                validateAndSearch(searchInfo)
-                return SearchUserJourney.AppState.WAITING
+                return SearchUserJourney.AppState.WAITING.also { validateAndSearch(searchInfo) }
             }
 
             override fun onNavigation(
@@ -122,7 +121,7 @@ class SlangLabsCommunicatorImpl(
 
             override fun onUtteranceDetected(p0: String?) {
                 Log.d(tag, "onUtteranceDetected = $p0")
-                printLog("onUnrecognisedUtterance $p0")
+                printLog("onUtteranceDetected $p0")
             }
 
             override fun onOnboardingSuccess() {
