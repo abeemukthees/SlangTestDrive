@@ -67,8 +67,8 @@ class SlangLabsCommunicatorImpl(
                 )
 
                 printLog("onSearch\n${searchInfo.source.city} - ${searchInfo.destination.city} on ${searchInfo.onwardDate}")
-
-                return SearchUserJourney.AppState.WAITING.also { validateAndSearch(searchInfo) }
+                validateAndSearch(searchInfo)
+                return SearchUserJourney.AppState.WAITING
             }
 
             override fun onNavigation(
