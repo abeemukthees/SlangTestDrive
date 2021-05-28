@@ -65,6 +65,12 @@ class MainActivity : AppCompatActivity() {
                 Log.d(TAG, "$action")
                 updateViews(action.sourceIdName, action.destinationIdName, action.dateOfJourney)
                 //slangLabsCommunicator.hideTrigger(this)
+                SearchResultActivity.open(
+                    this,
+                    action.sourceIdName.second,
+                    action.destinationIdName.second,
+                    action.dateOfJourney.toString()
+                )
             }
 
             is SlangLabsCommunicator.SlangLabsAction.PrintLogAction -> {
