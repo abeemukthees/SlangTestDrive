@@ -33,13 +33,14 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
     dynamicFeatures = [':slangLabs']
 }
 
 dependencies {
 
-    implementation libraries.kotlinStdlib
-    implementation libraries.kotlinReflect
+    api libraries.kotlinStdlib
+    api libraries.kotlinReflect
 
     implementation androidLibraries.androidxCoreKtx
     implementation androidLibraries.appCompatV7

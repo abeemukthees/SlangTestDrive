@@ -31,6 +31,10 @@ class MainActivity : AppCompatActivity() {
         button_show_trigger.setOnClickListener {
             slangLabsCommunicator.showTrigger(this)
         }
+
+        slangLabsCommunicator.actions.observe(this, {
+            processActions(it)
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -52,9 +56,6 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         slangLabsCommunicator.showTrigger(this)
-        slangLabsCommunicator.actions.observe(this, {
-            processActions(it)
-        })
     }
 
     private fun processActions(action: Action) {

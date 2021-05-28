@@ -13,6 +13,8 @@ class SearchResultActivity : AppCompatActivity() {
 
     companion object {
 
+        const val tag = "SearchResultActivity"
+
         fun open(context: Context, source: String, destination: String, date: String) {
             val intent = Intent(context, SearchResultActivity::class.java).apply {
                 putExtra("source", source)

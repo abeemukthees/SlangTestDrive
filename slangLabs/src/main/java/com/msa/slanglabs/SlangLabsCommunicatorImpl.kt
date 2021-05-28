@@ -14,8 +14,8 @@ import com.msa.slanglabs.data.NetworkDataStore
 import com.msa.slanglabs.entities.VoiceAssistantState
 import com.msa.slanglabs.entities.response.CityItem
 import com.msa.slangtestdrive.base.Action
-import com.msa.slangtestdrive.base.EventConsumedAction
 import com.msa.slangtestdrive.base.NetworkResponse
+import com.msa.slangtestdrive.base.SingleLiveEvent
 import com.msa.slangtestdrive.third.SlangLabsCommunicator
 import com.msa.slangtestdrive.utilities.default
 import kotlinx.coroutines.*
@@ -41,7 +41,7 @@ class SlangLabsCommunicatorImpl(
     )
     private val voiceAssistantState: LiveData<VoiceAssistantState> get() = voiceAssistantMutableState
 
-    private val actionsMutable = MutableLiveData<Action>()
+    private val actionsMutable = SingleLiveEvent<Action>()
     override val actions: LiveData<Action> = actionsMutable
 
     private val networkDataStore by lazy { NetworkDataStore(application, Gson()) }
@@ -168,7 +168,6 @@ class SlangLabsCommunicatorImpl(
         Log.d(tag, "postAction = ${action.javaClass.simpleName}")
         launch(Dispatchers.Main) {
             actionsMutable.value = action
-            actionsMutable.value = EventConsumedAction
         }
     }
 

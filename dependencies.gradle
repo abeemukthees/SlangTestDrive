@@ -11,7 +11,7 @@ ext.versions = [
 
         // Pure Java & Kotlin dependencies
 
-        kotlin                       : '1.4.30',
+        kotlin                       : '1.4.32',
         kotlinSerialization          : '0.14.0',
         kotlinCoroutines             : '1.3.9',
 
